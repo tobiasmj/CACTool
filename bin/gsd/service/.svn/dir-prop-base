@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 268
+GazeService$GazeListener.class
+GazeService.class
+LocationService$LoginListener.class
+LocationService$LogoutListener.class
+LocationService.class
+GazeService$LocalGazeListener.class
+LocationService$DeviceDetectedListener.class
+LocationService$DevicedMovedListener.class
+
+END

@@ -1,0 +1,10 @@
+K 10
+svn:ignore
+V 131
+WebSocket$1.class
+WebSocket.class
+WebSocketAsync$ReadState.class
+WebSocketAsync$WebsocketMessageHandler.class
+WebSocketAsync.class
+
+END

@@ -1,0 +1,32 @@
+K 10
+svn:ignore
+V 606
+EventBuilder.class
+EventBus$1.class
+EventBus$2.class
+EventBus$3.class
+EventBus$4.class
+EventBus$5.class
+EventBus$6.class
+EventBus$EventBusMessageListener.class
+EventBus$EventBusStatus.class
+EventBus$EventBusStatusListener.class
+EventBus.class
+Generator.class
+GeneratorAdapter.class
+IterableListener$IteratorListener.class
+IterableListener.class
+Listener.class
+ListenerToken$1.class
+ListenerToken.class
+PatternBuilder.class
+PatternOperator.class
+Quirk$Query.class
+Quirk.class
+Transformer$LinkedGenerator.class
+Transformer.class
+Util.class
+WebsocketReader$WebsocketMessageHandler.class
+WebsocketReader.class
+
+END

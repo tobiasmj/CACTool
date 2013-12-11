@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver
+END
+IObserver.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/IObserver.java
+END
+GazeEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/GazeEvent.java
+END
+ObserverEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/ObserverEvent.java
+END
+CollaborationEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/CollaborationEvent.java
+END
+CollaborationEventType.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/CollaborationEventType.java
+END
+DoctorEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/DoctorEvent.java
+END
+IObservable.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/IObservable.java
+END
+DoctorEventType.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/service/obeserver/DoctorEventType.java
+END

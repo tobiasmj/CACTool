@@ -1,0 +1,11 @@
+K 10
+svn:ignore
+V 123
+MySQLAdapter.class
+DBAdapter.class
+InformationStorage.class
+InformationStorageFactory.class
+dir_conflicts.prej
+FakeDB.java
+
+END

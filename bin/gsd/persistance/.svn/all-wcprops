@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/PKU_ITU/!svn/ver/67/trunk/CACTool/src/gsd/persistance
+END
+InformationStorageFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/PKU_ITU/!svn/ver/67/trunk/CACTool/src/gsd/persistance/InformationStorageFactory.java
+END
+DBAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/persistance/DBAdapter.java
+END
+InformationStorage.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/PKU_ITU/!svn/ver/64/trunk/CACTool/src/gsd/persistance/InformationStorage.java
+END
+FakeDB.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/PKU_ITU/!svn/ver/66/trunk/CACTool/src/gsd/persistance/FakeDB.java
+END

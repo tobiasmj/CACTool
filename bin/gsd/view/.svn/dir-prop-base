@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 156
+DoctorsRenderer.class
+DoctorsView.class
+GraphicsUtilities.class
+ImagesView.class
+MainView$1.class
+MainView.class
+ShadowRenderer.class
+CustomGlassPane.class
+
+END

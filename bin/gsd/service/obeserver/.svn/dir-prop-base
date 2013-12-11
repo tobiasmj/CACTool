@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 164
+DoctorEvent.class
+DoctorEventType.class
+GazeEvent.class
+IObservable.class
+IObserver.class
+ObserverEvent.class
+CollaborationEvent.class
+CollaborationEventType.class
+
+END

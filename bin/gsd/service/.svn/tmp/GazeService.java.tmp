@@ -1,0 +1,297 @@
+package gsd.service;
+
+import pku.edu.dataAccess.Doctor;
+import gsd.service.obeserver.GazeEvent;
+import gsd.service.obeserver.IObservable;
+import gsd.service.obeserver.IObserver;
+import gsd.settings.Settings;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import dk.itu.infobus.ws.EventBuilder;
+import dk.itu.infobus.ws.EventBus;
+import dk.itu.infobus.ws.Generator;
+import dk.itu.infobus.ws.GeneratorAdapter;
+import dk.itu.infobus.ws.Listener;
+import dk.itu.infobus.ws.PatternBuilder;
+import dk.itu.infobus.ws.PatternOperator;
+
+/**
+ * Use this class to listen for GenieHub events from a Gaze Tracker and
+ * transform them before re-emitting them. The events should contain the
+ * following fields: {type="gazeevent", x, y}
+ * 
+ * NOTE: EventBus and GenieHub are the same thing. The framework we work with
+ * use EventBus while we use GenieHub
+ * 
+ * @author GSD-2011 X-RAY Group
+ * 
+ */
+public class GazeService implements Runnable, IObservable {
+
+	// GenieHub address
+	private String ebAddress;
+	// GenieHub port
+	private int ebPort;
+	// GenieHub instance
+	private EventBus eb;
+	// Listener for Gaze Events
+	private Listener localGazeEventListener;
+	// Generator for transformed Gaze Events
+	private Generator gazeEventGenerator;
+	// The ID of the doctor currently logged in
+	private int doctorId;
+	// The ID of the image being looked at
+	private int imageId;
+	// List of observers
+	private List<IObserver> observers;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param address
+	 *            of GenieHub instance
+	 * @param port
+	 *            of GenieHub instance
+	 */
+	public GazeService() {
+		this.ebAddress = Settings.getInstance().getEbAddress();
+		this.ebPort = Settings.getInstance().getEbPort();
+		observers = new ArrayList<IObserver>();
+	}
+
+	/**
+	 * Run the service in its own thread using java.lang.Thread
+	 */
+	public void run() {
+		try {
+			// Start
+			eb = new EventBus(ebAddress, ebPort);
+			eb.start();
+			// Add listener
+			localGazeEventListener = new LocalGazeListener();
+			eb.addListener(localGazeEventListener);
+			// Add Generator
+			gazeEventGenerator = new GeneratorAdapter("GazeGenerator", "id",
+					"timestamp", "type", "doctorid", "imageid", "x", "y");
+			eb.addGenerator(gazeEventGenerator);
+		} catch (Exception e) {
+			System.out.println("Eventbus error in Listener: "
+					+ e.getStackTrace());
+		}
+	}
+
+	/**
+	 * Start listening for gazeevents from either a doctor or an image
+	 * 
+	 * @param doctorId
+	 * @param imageId
+	 */
+	public void listenForGazeEvents(Doctor doctor, String imageId) {
+		GazeListener gl;
+		try {
+			if (imageId != null) {
+				gl = new GazeListener(imageId);
+				eb.addListener(gl);
+			} else if (doctorId != 0) {
+				gl = new GazeListener(doctor);
+				eb.addListener(gl);
+			}
+		} catch (Exception e) {
+			// TODO: handle
+		}
+	}
+
+	/**
+	 * Call on logout to stop listening for gazeevents from all doctors
+	 */
+	public void stopListening() {
+
+	}
+
+	/**
+	 * Called when an event has been received to re-emit it in to GenieHub
+	 * Before transmitting the events, the x- and y-coordinates are transformed
+	 * from absolute to relative coordinates
+	 * 
+	 * @param type
+	 *            , event type
+	 * @param x
+	 *            , x-coordinate of gaze event
+	 * @param y
+	 *            , y-coordinate of gaze event
+	 */
+	private void publish(String type, int x, int y) {
+		// Transform coordinates
+<<<<<<< .mine
+		
+		Point tp = transformPoint(new Point(x,y));
+		
+=======
+
+		Point tp = new Point(x, y);
+>>>>>>> .r46
+		// Helper to build events
+		EventBuilder evb = new EventBuilder();
+		// Generate and publish event
+		gazeEventGenerator.publish(evb.put("id", "id").put("timestamp", "dd")
+				.put("type", type).put("doctorid", doctorId)
+				.put("imageid", imageId).put("x", tp.x).put("y", tp.y)
+				.getEvent());
+	}
+
+	/**
+	 * Add an observer
+	 */
+	@Override
+	public void addObserver(IObserver observer) {
+		observers.add(observer);
+	}
+
+	/**
+	 * Remove an observer
+	 */
+	@Override
+	public void removeObserver(IObserver observer) {
+		observers.remove(observer);
+	}
+
+	/**
+	 * Notify all observers of gazeevents;
+	 */
+	public void notifyObservers(int id, int time, int doctorid, int imageid,
+			int x, int y) {
+		GazeEvent evt = new GazeEvent(id, time, doctorid, imageid, x, y);
+		for (Iterator<IObserver> it = observers.iterator(); it.hasNext();) {
+			IObserver observer = (IObserver) it.next();
+			observer.onNotify(evt);
+		}
+	}
+
+	public void setImageId(int imageId) {
+		this.imageId = imageId;
+	}
+
+	public void setDoctorId(int doctorId) {
+		this.doctorId = doctorId;
+	}
+
+	/**
+	 * Called when a gazeevent from a doctor/image has been received
+	 * 
+	 * @param msg
+	 */
+	private void onGazeEvent(Map<String, Object> msg) {
+		if (this.doctorId != 0 && Integer.parseInt((String) msg.get("doctorid")) != this.doctorId) {
+		notifyObservers(Integer.parseInt((String) msg.get("id")),
+				Integer.parseInt((String) msg.get("timestamp")),
+				Integer.parseInt((String) msg.get("doctorid")),
+				Integer.parseInt((String) msg.get("imageid")),
+				Integer.parseInt((String) msg.get("x")),
+				Integer.parseInt((String) msg.get("y")));
+		}
+	}
+
+	/**
+	 * Transform an x- or y-coordinate
+	 * 
+	 * @param n
+	 *            - x- or y-coordinate
+	 * @return transformed coordinate
+	 */
+	private Point transformPoint(Point p) {
+		// TODO: implement transformation
+		// get screenSize and location
+		Point locOnScreen = Settings.getInstance().getMainFrame().getLocationOnScreen();
+		Point transPoint;
+		int height	= Settings.getInstance().getMainFrame().getHeight();
+		int width = Settings.getInstance().getMainFrame().getWidth();
+		// transform screen point to application point
+<<<<<<< .mine
+		// check if inside application window.
+		if(p.x <= locOnScreen.x + width && p.x >= locOnScreen.x &&  p.y <= locOnScreen.y + height && p.y >= locOnScreen.y) {
+			transPoint = new Point(p.x - locOnScreen.x, p.y - locOnScreen.y);
+			return transPoint;
+
+		}
+		return null;
+=======
+		// this.
+		return 0;
+>>>>>>> .r46
+	}
+
+	/**
+	 * Listener implementation for local gazeevents
+	 */
+	class LocalGazeListener extends Listener {
+
+		public LocalGazeListener() {
+			super(new PatternBuilder()
+					.add("type", PatternOperator.EQ, "gazeevent")
+					.add("zone", PatternOperator.EQ,
+							Settings.getInstance().getLocation())
+					.addMatchAll("x").addMatchAll("y").getPattern());
+		}
+
+		@Override
+		public void onStarted() {
+		}
+
+		@Override
+		public void onMessage(Map<String, Object> msg) {
+			// On event from Gaze Tracker we re-emit the event with extra
+			// information
+			publish((String) msg.get("type"),
+					Integer.parseInt((String) msg.get("x")),
+					Integer.parseInt((String) msg.get("y")));
+		}
+
+		@Override
+		public void cleanUp() throws Exception {
+		}
+	}
+
+	/**
+	 * Listener for gazeevents from doctor or image
+	 */
+	class GazeListener extends Listener {
+		public GazeListener(Doctor doctor) {
+			super(new PatternBuilder()
+					.add("type", PatternOperator.EQ, "gazeevent")
+					.add("doctorid", PatternOperator.EQ, doctor.getId())
+					.addMatchAll("x").addMatchAll("y").getPattern());
+		}
+
+		public GazeListener(String imageId) {
+			super(new PatternBuilder()
+					.add("type", PatternOperator.EQ, "gazeevent")
+					.add("imageid", PatternOperator.EQ, imageId)
+					.addMatchAll("x").addMatchAll("y").getPattern());
+		}
+
+		@Override
+		public void onStarted() {
+		}
+
+		@Override
+		public void onMessage(Map<String, Object> msg) {
+			onGazeEvent(msg);
+		}
+
+		@Override
+		public void cleanUp() throws Exception {
+		}
+	}
+
+	/************************************************************
+	 * Testing notifications
+	 ************************************************************/
+	public void fireTestNotification() {
+		notifyObservers(100, 100, 2, 1, 300, 400);
+	}
+}
